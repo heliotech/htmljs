@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>softdev search engine</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!--
+Template upon: Flexbox Card Grid
+https://codepen.io/mcraiganthony/pen/NxGxqm
+-->
+<h1 class="title">Duckduckgo search interface</h1>
+
+<ul class="cards">
+  <li class="cards__item">
+    
+    <!-- NR 1: python -->
+    <div class="card">
+      <div class="card__image card__image--fence"></div>
+      <div class="card__content">
+        <div class="card__title">python</div>
+        <p class="card__text">Search: python + ... </p>
+        <form class="searchform" name="x" action="https://duckduckgo.com/">
+            <input type="hidden" value="1" name="kh" /><!-- kh: HTTPS 1, -1 off -->
+            <input type="hidden" value="1" name="kn" /> <!-- kn: new window 1, -1 off -->
+            <input type="hidden" value="1" name="kac" /> <!-- kac: auto-suggest 1, -1 off -->
+            <input class="searchTile" type="search" name="q" size="30" value="python " />
+            <button class="button" type="submit" title="Search DuckDuckGo">S ⇰</button>
+        </form>
+      </div>
+    </div>
+  </li>
+  
+  <!-- NR 1: matplotlib -->
+  <li class="cards__item">
+    <div class="card">
+      <div class="card__image card__image--fence"></div>
+      <div class="card__content">
+        <div class="card__title">matplotlib</div>
+        <p class="card__text">Search: matplotlib + ... </p>
+        <form class="searchform" name="x" action="https://duckduckgo.com/">
+            <input type="hidden" value="1" name="kh" /><!-- kh: HTTPS 1, -1 off -->
+            <input type="hidden" value="1" name="kn" /> <!-- kn: new window 1, -1 off -->
+            <input type="hidden" value="1" name="kac" /> <!-- kac: auto-suggest 1, -1 off -->
+            <input class="searchTile" type="search" name="q" size="30" value="matplotlib " />
+            <button class="button" type="submit" title="Search DuckDuckGo">S ⇰</button>
+        </form>
+      </div>
+    </div>
+  </li>
+  
+  <!-- NR 2: numpy -->
+  <li class="cards__item">
+    <div class="card">
+      <div class="card__image card__image--fence"></div>
+      <div class="card__content">
+        <div class="card__title">numpy</div>
+        <p class="card__text">Search: numpy + ... </p>
+        <form class="searchform" name="x" action="https://duckduckgo.com/">
+            <input type="hidden" value="1" name="kh" /><!-- kh: HTTPS 1, -1 off -->
+            <input type="hidden" value="1" name="kn" /> <!-- kn: new window 1, -1 off -->
+            <input type="hidden" value="1" name="kac" /> <!-- kac: auto-suggest 1, -1 off -->
+            <input class="searchTile" type="search" name="q" size="30" value="numpy " />
+            <button class="button" type="submit" title="Search DuckDuckGo">S ⇰</button>
+        </form>
+      </div>
+    </div>
+  </li>
+  
+  
+</ul>
+
+</body>
+</html>

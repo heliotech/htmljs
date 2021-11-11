@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>softdev search engine</title>
+<link rel="icon" type="image/png" href="/home/khaz/docs/html/img/searchUtfIcon.png">
+<link rel="stylesheet" href="style.css">
+
+<script type="text/javascript">
+
+var out00String = "";
+
+function print(string) {
+  out00String += string;
+  return out00String;
+}
+
+function println(string) {
+  out00String += string + "<br />";
+  return out00String;
+}
+
+function printArr(element, index) {
+  //prints array -- concats with `out00String`
+  
+  out00String = println(index + ") " + element.id);
+}
+
+function onlyParas(element, idx) {
+  // For filtering 'paragraphs' from an array
+  if (element.tagName == "P"){
+    console.log("onlyParas: returning " + element.tagName);
+    try {
+        console.log("    element.attributes.class.value: " + element.attributes.class.value);
+    } catch (error) {
+      console.log("    >" + error + "<");
+    }
+    return element;
+  }
+}
+var	InputDB = {rowPython: {title: "Python",
+                              sections: {s00: "Search: python + ...!",
+                                         s01: "Search: matplotlib + ...!",
+                                         s02: "Search: numpy + ...!",
+                                         s03: "Search: sympy + ...!",}},
+				  rowHTML: {title: "HTML and CSS",
+				  						sections: {}},
+				  rowLaTeX: {title: "LaTeX",
+				  						sections: {}},
+				  };
+InputDB.rowHTML.sections.s00 = "Search: html + ... ";
+InputDB.rowHTML.sections.s01 = "Search: css + ... ";
+InputDB.rowHTML.sections.s02 = "Search: javascript + ... ";
+InputDB.rowLaTeX.sections.s00 = "Search: latex + ... ";
+InputDB.rowLaTeX.sections.s01 = "Search: latex how to + ... ";
+//InputDB.rowHTML.sections = {s01: "Search: javascript + ... "};
+//InputDB.rowLaTeX.sections = {s02: "Search: latex + ..."};
+//InputDB.rowLaTeX.sections = {s01: "Search: latex how to + ..."};
+var IDBKeys = Object.keys(InputDB);
+
+tabs4 = "&nbsp;&nbsp;&nbsp;&nbsp;";
+tabs8 = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	
+	function printDom() {
+    var out00 = document.getElementById("pOut00");
+    
+    var rowTits = document.getElementsByClassName("row_tit");
+    lTits = rowTits.length;
+    // out00String = println("Nr of titles = " + lTits)";
+    
+    for (i = 0; i < lTits; i++) {
+      curElement = rowTits[i];
+      // out00String = println(i + ": " + curElement);
+      curElement.innerHTML = curElement.innerHTML + " (" + i + ")";
+    }
+    
+    // rows of class = "flexRow":
+    out00String = println("<br /> ------------------- 'flexRow's:");
+    var flexRows = document.getElementsByClassName("flexRow");
+    lFR = flexRows.length;
+    out00String = println("flexRows.length = " + lFR);
+    for (i = 0; i < lFR; i++) {
+      var target = flexRows[i];
+      out00String = println(i + ") 'flexRow' &rarr; " + target);
+      // iteration through a 'div' element:
+      var divChildren = target.children;
+      var IDBSections = Object.keys(InputDB[IDBKeys[i]]);
+      for (j = 0; j < divChildren.length; j++) {
+        var curElement = divChildren[j];
+        out00String = println(tabs4 + "'flexRow' &rarr; child &rarr; " + curElement);
+        var curElementChildren = curElement.children;
+        for (k = 0; k < curElementChildren.length; k++) {
+          var ccelement = curElementChildren[k];
+          if (ccelement.tagName != "FORM") {
+          var attrsR = [];
+          for (let p in ccelement.attributes) {
+            // console.log("pushing: ", p);
+            attrsR.push(p);
+          }
+          // out00String = println(tabs8 + "'flexRow' &rarr; child &rarr; child &rarr;" + ccelement + ", attributes: " + attrsR + ", " + ccelement.attributes.item(0));// + ccelement.attributes.class.value);
+          out00String = print(tabs8 + "i = " + i + ", j = " + j + ") 'flexRow' &rarr; child &rarr; child &rarr;" + ccelement + ": " + ccelement.innerHTML + " (innerHTML), attributes: " + ccelement.attributes.length);  // + ", attrsR = " + attrsR);  // + ccelement.attributes.class.value);
+            out00String = println(", Array.from(...)[0]: " + Array.from(ccelement.attributes)[0]);
+            out00String = println(tabs8 + tabs4 + "(" + ccelement.className + ", " + ccelement.id + ")");
+//            out00String = println(tabs8 + "title = " + InputDB[IDBKeys[i]][IDBSections[j]]);
+				  out00String = println(tabs8 + "IDBKeys[i] = " + IDBKeys[i]);
+				  out00String = println(tabs8 + "IDBSections = " + IDBSections[1]);
+				  out00String = println(tabs8 + "InputDB[IDBKeys[i]][IDBSections[1]] = " + InputDB[IDBKeys[i]][IDBSections[1]][0]);
+				  //out00String = println(tabs8 + "title = " + InputDB[IDBKeys[i]][IDBSections[j]]);
+          }
+        }
+      }
+    }
+    
+    // 'searchCont' class:
+    out00String = println("<br />'searchCont class'");
+    var searchConts = document.getElementsByClassName("searchCont");
+    const searchContsR = Array.from(searchConts);
+    let lSCR = searchContsR.length;
+    out00String = println("searchContsR.length = " + lSCR);
+    const searchContsParasR = searchContsR.filter(onlyParas);
+    const lSCP = searchContsParasR.length;
+    out00String = println("searchContsParasR = '" + searchContsParasR + "' (" + lSCP + ")");
+    out00String = println("Array searchContsR: is array?: " + Array.isArray(searchContsR));
+    out00String = println("searchContsR.length = " + searchContsR.length);
+    // searchContsR.forEach(printArr);
+    for (let i in searchContsR) {
+      var divChildrenR = Array.from(searchContsR[i].children);
+      var divChildrenParasR = divChildrenR.filter(onlyParas);
+      var lDCP = divChildrenParasR.length;
+      out00String = print("typeof(divChildrenParasR) = " + typeof(divChildrenParasR) + ", len = " + lDCP, out00String);
+      out00String = println(", divChildrenParasR[0].innerHTML = " + divChildrenParasR[0].innerHTML);
+    }
+    // var searchConts = flexRows.children.getElementsByClassName("searchCont");
+    for (i = 0; i < searchConts.length; i++) {
+      var element = searchConts[i];
+      out00String = println(i + ") '" + element.id + "'");
+      var paras = element.getElementsByClassName("desc");  // 'paragraphs'
+      var typeParas = typeof(paras);
+      var lPs = paras.length;
+      out00String = println(tabs4 + "paras: " + paras + " (" + typeParas + ", l = " + lPs + ")");
+      // for (j = 0; j < lPs; j++) {
+        // out00String = println(tabs4 + "paras[j].innerHTML = " + paras[j].innerHTML);
+        try {
+          out00String = println(tabs4 + "paras[j=" + 0 + "].innerHTML = " + paras[0].innerHTML);
+        }
+        catch (error) {
+          out00String = println(tabs4 + "paras[0] -- exception: " + error);
+        }
+      // }
+    }
+    
+    // printing InputDB:
+    out00String = println("<br />JSON");
+    out00String = println("********");
+    out00String += "InputDB: " + InputDB + "<br />";
+    for (const x in InputDB) {
+      obj = InputDB[x];
+      out00String += obj.title + "<br />";
+    }
+    out00String += "Another iteration: <br />";
+    // var IDBKeys = Object.keys(InputDB);
+    out00String += "IDBKeys: " + IDBKeys + "<br />";
+    for (i = 0; i < IDBKeys.length; i++) {
+      var key = IDBKeys[i];
+      var obj = InputDB[key];
+      out00String += tabs4 + obj;
+      out00String += " title: " + obj.title + "<br />";
+      var curSects = obj.sections;
+      try {
+        var lCS = Object.keys(curSects).length;
+      } catch (error) { var lCS = 0;}
+      out00String = println("sections: " + curSects + " (length = " + lCS + ")");
+      try {
+        for (j = 0; j < lCS; j++) {
+          out00String = println(tabs4 + j + ") " + curSects[Object.keys(curSects)[j]]);
+        } } catch (error) { out00String = println("Error: " + error);}
+    }
+    var elements = document.getElementsByClassName("row_tit");
+    out00String = println("elements: " + elements + " (" + elements.length + ")");
+    for (i = 0; i < elements.length; i++) {
+      var e = elements[i];
+      out00String = println(i + ") " + e.tagName + " id = " + e.id + " of class " + e.attributes.class.value);
+    }
+    const ePOut00 = document.getElementById("pOut00");
+    out00String = println("ePOut00: " + ePOut00);
+    out00String = println("ePOut00.attributes: " + ePOut00.attributes);
+    out00String = println("ePOut00.attributes.class.name: " + ePOut00.attributes.class.name);
+    out00String = println("ePOut00.attributes.class.value: " + ePOut00.attributes.class.value);
+    out00.innerHTML = out00String;
+  }
+
+</script>
+
+</head>
+<!-- <body onload="setDynamic()"> -->
+<body>
+
+<!-- 
+From zero
+credits: https://www.lambdatest.com/blog/css-flexbox-tutorial/
+-->
+
+<h1 class="title">Duckduckgo search interface</h1>
+
+<div id="parent">
+
+  <div id="0" class="row_tit">Python</div>
+  <div id="row00" class="flexRow">
+      <div id="e00" class="searchCont"><p class="desc" id="00">Search: python + ... </p>
+      	  <form class="searchform" name="x" action="https://duckduckgo.com/">
+            <input type="hidden" value="1" name="kh" /><!-- kh: HTTPS 1, -1 off -->
+            <input type="hidden" value="1" name="kn" /> <!-- kn: new window 1, -1 off -->
+            <input type="hidden" value="1" name="kac" /> <!-- kac: auto-suggest 1, -1 off -->
+            <input class="searchTile" type="search" name="q" size="30" value="python " />
+            <button class="button" type="submit" title="Search DuckDuckGo">🐍</button>
+        	  </form></div>
+      <div id="e01" class="searchCont"><p class="desc" id="01">Search: matplotlib + ... </p>
+      	  <form class="searchform" name="x" action="https://duckduckgo.com/">
+            <input type="hidden" value="1" name="kh" /><!-- kh: HTTPS 1, -1 off -->
+            <input type="hidden" value="1" name="kn" /> <!-- kn: new window 1, -1 off -->
+            <input type="hidden" value="1" name="kac" /> <!-- kac: auto-suggest 1, -1 off -->
+            <input class="searchTile" type="search" name="q" size="30" value="matplotlib " />
+            <button class="button" type="submit" title="Search DuckDuckGo">🔎</button>
+        	  </form></div>
+      <div id="e02" class="searchCont"><p class="desc" id="02">Search: numpy + ... </p>
+      	  <form class="searchform" name="x" action="https://duckduckgo.com/">
+            <input type="hidden" value="1" name="kh" /><!-- kh: HTTPS 1, -1 off -->
+            <input type="hidden" value="1" name="kn" /> <!-- kn: new window 1, -1 off -->
+            <input type="hidden" value="1" name="kac" /> <!-- kac: auto-suggest 1, -1 off -->
+            <input class="searchTile" type="search" name="q" size="30" value="numpy " />
+            <button class="button" type="submit" title="Search DuckDuckGo">🔎</button>
+        	  </form></div>
+      <div id="e03" class="searchCont"><p class="desc" id="03">Search: sympy + ... </p>
+      	  <form class="searchform" name="x" action="https://duckduckgo.com/">
+            <input type="hidden" value="1" name="kh" /><!-- kh: HTTPS 1, -1 off -->
+            <input type="hidden" value="1" name="kn" /> <!-- kn: new window 1, -1 off -->
+            <input type="hidden" value="1" name="kac" /> <!-- kac: auto-suggest 1, -1 off -->
+            <input class="searchTile" type="search" name="q" size="30" value="sympy " />
+            <button class="button" type="submit" title="Search DuckDuckGo">🔎</button>
+        	  </form></div>
+  </div>
+
+  <div id="1" class="row_tit">HTML + CSS</div>
+  <div id="row01"  class="flexRow">
+    <!-- <div class="row_tit">Row 1 </div> -->
+      <div class="searchCont"><p class="desc" id="00">Search: html + ... </p>
+      	  <form class="searchform" name="x" action="https://duckduckgo.com/">
+            <input type="hidden" value="1" name="kh" /><!-- kh: HTTPS 1, -1 off -->
+            <input type="hidden" value="1" name="kn" /> <!-- kn: new window 1, -1 off -->
+            <input type="hidden" value="1" name="kac" /> <!-- kac: auto-suggest 1, -1 off -->
+            <input class="searchTile" type="search" name="q" size="30" value="html " />
+            <button class="button" type="submit" title="Search DuckDuckGo">🔎</button>
+        	  </form></div>
+      <div class="searchCont"><p class="desc" id="01">Search: css + ... </p>
+      	  <form class="searchform" name="x" action="https://duckduckgo.com/">
+            <input type="hidden" value="1" name="kh" /><!-- kh: HTTPS 1, -1 off -->
+            <input type="hidden" value="1" name="kn" /> <!-- kn: new window 1, -1 off -->
+            <input type="hidden" value="1" name="kac" /> <!-- kac: auto-suggest 1, -1 off -->
+            <input class="searchTile" type="search" name="q" size="30" value="css " />
+            <button class="button" type="submit" title="Search DuckDuckGo">🔎</button>
+        	  </form></div>
+      <div class="searchCont"><p class="desc" id="02">Search: js + ... </p>
+      	  <form class="searchform" name="x" action="https://duckduckgo.com/">
+            <input type="hidden" value="1" name="kh" /><!-- kh: HTTPS 1, -1 off -->
+            <input type="hidden" value="1" name="kn" /> <!-- kn: new window 1, -1 off -->
+            <input type="hidden" value="1" name="kac" /> <!-- kac: auto-suggest 1, -1 off -->
+            <input type="text" id="jsInput" class="searchTile" type="search" name="q" size="30" value="" />
+            <button class="button" type="submit" title="Search DuckDuckGo">🔎</button>
+        	  </form></div>
+  </div>
+
+
+  	<div id="2" class="row_tit">LaTeX</div>
+  	
+  <div id="row02"  class="flexRow">
+   	
+      <div class="searchCont"><p class="desc" id="00">Search: latex + ... </p>
+      	  <form class="searchform" name="x" action="https://duckduckgo.com/">
+            <input type="hidden" value="1" name="kh" /><!-- kh: HTTPS 1, -1 off -->
+            <input type="hidden" value="1" name="kn" /> <!-- kn: new window 1, -1 off -->
+            <input type="hidden" value="1" name="kac" /> <!-- kac: auto-suggest 1, -1 off -->
+            <input class="searchTile" type="search" name="q" size="30" value="latex " />
+            <button class="button" type="submit" title="Search DuckDuckGo">🔎</button>
+        	  </form></div>
+      <div class="searchCont"><p class="desc" id="01">Search: latex how to + ... </p>
+      	  <form class="searchform" name="x" action="https://duckduckgo.com/">
+            <input type="hidden" value="1" name="kh" /><!-- kh: HTTPS 1, -1 off -->
+            <input type="hidden" value="1" name="kn" /> <!-- kn: new window 1, -1 off -->
+            <input type="hidden" value="1" name="kac" /> <!-- kac: auto-suggest 1, -1 off -->
+            <input class="searchTile" type="search" name="q" size="30" value="latex how to " />
+            <button class="button" type="submit" title="Search DuckDuckGo">🔎</button>
+        	  </form></div> 
+      <div class="searchCont"><p class="desc" id="02">Search: ... </p>
+      	  <form class="searchform" name="x" action="https://duckduckgo.com/">
+            <input type="hidden" value="1" name="kh" /><!-- kh: HTTPS 1, -1 off -->
+            <input type="hidden" value="1" name="kn" /> <!-- kn: new window 1, -1 off -->
+            <input type="hidden" value="1" name="kac" /> <!-- kac: auto-suggest 1, -1 off -->
+            <input class="searchTile" type="search" name="q" size="30" value="" />
+            <button class="button" type="submit" title="Search DuckDuckGo">🔎</button>
+        	  </form></div>
+      </div>
+  
+</div>
+
+<button id="button00" type="button" onclick="printDom()">Test DOM</button>
+
+<p id="pOut00" class="blabla"></p>
+
+
+<p id="sign">khaz&copy;2021</p>
+
+</body>
+</html>

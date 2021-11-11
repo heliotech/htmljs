@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>softdev search engine</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!--
+From zero
+credits: https://www.lambdatest.com/blog/css-flexbox-tutorial/
+-->
+<h1 class="title">Duckduckgo search interface</h1>
+
+
+
+</body>
+</html>

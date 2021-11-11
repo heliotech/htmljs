@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>softdev search engine</title>
+<link rel="icon" type="image/png" href="/home/khaz/docs/html/img/searchUtfIcon.png">
+<link rel="stylesheet" href="style.css">
+
+<script type="text/javascript">
+
+var out00String = "";
+
+tabs4 = "&nbsp;&nbsp;&nbsp;&nbsp;";
+tabs8 = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
+function print(string) {
+  out00String += string;
+  return out00String;
+}
+
+function println(string) {
+  out00String += string + "<br />";
+  return out00String;
+}
+
+function printArr(element, index) {
+  //prints array -- concats with `out00String`
+  
+  out00String = println(index + ") " + element.id);
+}
+
+function onlyParas(element, idx) {
+  // For filtering 'paragraphs' from an array
+  if (element.tagName == "P"){
+    console.log("onlyParas: returning " + element.tagName);
+    try {
+        console.log("    element.attributes.class.value: " + element.attributes.class.value);
+    } catch (error) {
+      console.log("    >" + error + "<");
+    }
+    return element;
+  }
+}
+
+var	InputDB = {rowPython: {title: "Python",
+                              sections: {s00: {title: "Search: python + ...", hint: "python "},
+                                         s01: {title: "Search: matplotlib + ...", hint: "matplotlib "},
+                                         s02: {title: "Search: numpy + ...", hint: "numpy "},
+                                         s03: {title: "Search: sympy + ...", hint: "sympy "},}},
+				  rowHTML: {title: "HTML and CSS",
+				  						sections: {}},
+				  rowLaTeX: {title: "LaTeX",
+				  						sections: {}},
+				  };
+InputDB.rowHTML.sections.s00 = {title: "Search: html + ... ", hint: "html "};
+InputDB.rowHTML.sections.s01 = {title: "Search: css + ... ", hint: "css "};
+InputDB.rowHTML.sections.s02 = {title: "Search: javascript + ... ", hint: "javascript "};
+InputDB.rowLaTeX.sections.s00 = {title: "Search: latex + ... ", hint: "latex "};
+InputDB.rowLaTeX.sections.s01 = {title: "Search: latex how to + ... ", hint: "latex how to "};
+var IDBKeys = Object.keys(InputDB);
+
+function addSearchSection(section) {
+  // root:
+  const rootDiv = document.getElementById("parent");
+  
+  // new section title:
+  var newTitleDiv = document.createElement("div");
+  newTitleDiv.setAttribute("id", "1");
+  newTitleDiv.setAttribute("class", "row_tit");
+  var node = document.createTextNode(section.title);
+  newTitleDiv.append(node);
+  rootDiv.appendChild(newTitleDiv);
+  
+  // new `flexRow`:
+  var newFlexRowDiv = document.createElement("div");
+  newFlexRowDiv.setAttribute("id", "row01");
+  newFlexRowDiv.setAttribute("class", "flexRow");
+  
+  var sectionTilesKeys = Object.keys(section.sections);
+  var tilesLen = sectionTilesKeys.length;
+  out00String = println("tilesLen = " + tilesLen);
+  for (i = 0; i < tilesLen; i++) {
+    // addSearchTile(section.sections[i]);
+    out00String = print("`addSearchTile(section.sections[sectionTilesKeys[" + i + "]]);`");
+    // out00String = println(" ->  + addSearchTile(" + section.sections[i] + ")");
+    out00String = println(" ->  " + section.sections[sectionTilesKeys[i]]);
+    console.log("Adding `" + section.sections[sectionTilesKeys[i]] + "`");
+    addSearchTile(section.sections[sectionTilesKeys[i]], newFlexRowDiv);
+  }
+  
+  rootDiv.appendChild(newFlexRowDiv);
+}
+
+function addSearchTile(tile, root){
+  const rootDiv = document.getElementById("parent");
+  out00String = println("Adding tile `title`= " + tile.title + ", `hint` = " + tile.hint);
+  
+  // elements of 'searchCont':
+    // button:
+  var submitButton = document.createElement("button");
+  submitButton.setAttribute("type", "submit");
+  submitButton.setAttribute("title", "Search DuckDuckGo");
+  submitButton.setAttribute("class", "button");
+  var searchIcon = document.createTextNode("🔎");
+  submitButton.appendChild(searchIcon);
+    // inputs:
+  var inputKh = document.createElement("input");
+  inputKh.setAttribute("type", "hidden");
+  inputKh.setAttribute("value", "1");
+  inputKh.setAttribute("name", "kh");
+  var inputKn = document.createElement("input");
+  inputKn.setAttribute("type", "hidden");
+  inputKn.setAttribute("value", "1");
+  inputKn.setAttribute("name", "kn");
+  var inputKac = document.createElement("input");
+  inputKac.setAttribute("type", "hidden");
+  inputKac.setAttribute("value", "1");
+  inputKac.setAttribute("name", "kac");
+  var inputSearch = document.createElement("input");
+  inputSearch.setAttribute("class", "searchTitle");
+  inputSearch.setAttribute("type", "search");
+  inputSearch.setAttribute("size", "30");
+  inputSearch.setAttribute("name", "q");
+  inputSearch.setAttribute("value", tile.hint);
+    // form:
+  var formElement = document.createElement("form");
+  formElement.setAttribute("class", "searchform");
+  formElement.setAttribute("name", "x");
+  formElement.setAttribute("action", "https://duckduckgo.com/");
+  formElement.appendChild(inputKh);
+  formElement.appendChild(inputKn);
+  formElement.appendChild(inputKac);
+  formElement.appendChild(inputSearch);
+  formElement.appendChild(submitButton);
+  
+  // new searchCont:
+  var contTitle = document.createTextNode(tile.title);
+  var contTitleP = document.createElement("p");
+  contTitleP.appendChild(contTitle);
+  var searchContDiv = document.createElement("div");
+  searchContDiv.setAttribute("id", "e00");
+  searchContDiv.setAttribute("class", "searchCont");
+  searchContDiv.appendChild(contTitleP);
+  searchContDiv.appendChild(formElement);
+  
+  root.appendChild(searchContDiv);
+}
+	
+	function printDom() {
+    var out00 = document.getElementById("pOut00");
+    
+    var rowTits = document.getElementsByClassName("row_tit");
+    lTits = rowTits.length;
+    // out00String = println("Nr of titles = " + lTits)";
+    
+    for (i = 0; i < lTits; i++) {
+      curElement = rowTits[i];
+      // out00String = println(i + ": " + curElement);
+      curElement.innerHTML = curElement.innerHTML + " (" + i + ")";
+    }
+    
+    // rows of class = "flexRow":
+    out00String = println("<br /> ------------------- 'flexRow's:");
+    var flexRows = document.getElementsByClassName("flexRow");
+    lFR = flexRows.length;
+    for (i = 0; i < lFR; i++) {
+      var target = flexRows[i];
+      out00String = println(i + ") 'flexRow' &rarr; " + target);
+      // iteration through a 'div' element:
+      var divChildren = target.children;
+      for (j = 0; j < divChildren.length; j++) {
+        var curElement = divChildren[i];
+        out00String = println(tabs4 + "'flexRow' &rarr; child &rarr; " + curElement);
+        var curElementChildren = curElement.children;
+        for (k = 0; k < curElementChildren.length; k++) {
+          var ccelement = curElementChildren[k];
+          if (ccelement.tagName != "FORM") {
+          var attrsR = [];
+          for (let p in ccelement.attributes) {
+            // console.log("pushing: ", p);
+            attrsR.push(p);
+          }
+          // out00String = println(tabs8 + "'flexRow' &rarr; child &rarr; child &rarr;" + ccelement + ", attributes: " + attrsR + ", " + ccelement.attributes.item(0));// + ccelement.attributes.class.value);
+          out00String = print(tabs8 + "'flexRow' &rarr; child &rarr; child &rarr;" + ccelement + ": " + ccelement.innerHTML + ", attributes: " + ccelement.attributes.length);  // + ", attrsR = " + attrsR);  // + ccelement.attributes.class.value);
+            out00String = println(", Array.from(...)[0]: " + Array.from(ccelement.attributes)[0]);
+          }
+        }
+      }
+    }
+    
+    // 'searchCont' class:
+    out00String = println("<br />'searchCont class'");
+    var searchConts = document.getElementsByClassName("searchCont");
+    const searchContsR = Array.from(searchConts);
+    let lSCR = searchContsR.length;
+    out00String = println("searchContsR.length = " + lSCR);
+    const searchContsParasR = searchContsR.filter(onlyParas);
+    const lSCP = searchContsParasR.length;
+    out00String = println("searchContsParasR = '" + searchContsParasR + "' (" + lSCP + ")");
+    out00String = println("Array searchContsR: is array?: " + Array.isArray(searchContsR));
+    out00String = println("searchContsR.length = " + searchContsR.length);
+    // searchContsR.forEach(printArr);
+    for (let i in searchContsR) {
+      var divChildrenR = Array.from(searchContsR[i].children);
+      var divChildrenParasR = divChildrenR.filter(onlyParas);
+      var lDCP = divChildrenParasR.length;
+      out00String = print("typeof(divChildrenParasR) = " + typeof(divChildrenParasR) + ", len = " + lDCP, out00String);
+      out00String = println(", divChildrenParasR[0].innerHTML = " + divChildrenParasR[0].innerHTML);
+    }
+    // var searchConts = flexRows.children.getElementsByClassName("searchCont");
+    for (i = 0; i < searchConts.length; i++) {
+      var element = searchConts[i];
+      out00String = println(i + ") '" + element.id + "'");
+      var paras = element.getElementsByClassName("desc");  // 'paragraphs'
+      var typeParas = typeof(paras);
+      var lPs = paras.length;
+      out00String = println(tabs4 + "paras: " + paras + " (" + typeParas + ", l = " + lPs + ")");
+      // for (j = 0; j < lPs; j++) {
+        // out00String = println(tabs4 + "paras[j].innerHTML = " + paras[j].innerHTML);
+        try {
+          out00String = println(tabs4 + "paras[j=" + 0 + "].innerHTML = " + paras[0].innerHTML);
+        }
+        catch (error) {
+          out00String = println(tabs4 + "paras[0] -- exception: " + error);
+        }
+      // }
+    }
+    
+    // printing InputDB:
+    out00String = println("<br />JSON");
+    out00String = println("********");
+    out00String += "InputDB: " + InputDB + "<br />";
+    for (const x in InputDB) {
+      obj = InputDB[x];
+      out00String += obj.title + "<br />";
+    }
+    out00String += "Another iteration: <br />";
+    // var IDBKeys = Object.keys(InputDB);
+    out00String += "IDBKeys: " + IDBKeys + "<br />";
+    for (i = 0; i < IDBKeys.length; i++) {
+      var key = IDBKeys[i];
+      var obj = InputDB[key];
+      out00String += tabs4 + obj;
+      out00String += " title: " + obj.title + "<br />";
+      var curSects = obj.sections;
+      try {
+        var lCS = Object.keys(curSects).length;
+      } catch (error) { var lCS = 0;}
+      out00String = println("sections: " + curSects + " (length = " + lCS + ")");
+      try {
+        for (j = 0; j < lCS; j++) {
+          out00String = println(tabs4 + j + ") " + curSects[Object.keys(curSects)[j]]);
+        } } catch (error) { out00String = println("Error: " + error);}
+    }
+    var elements = document.getElementsByClassName("row_tit");
+    out00String = println("elements: " + elements + " (" + elements.length + ")");
+    for (i = 0; i < elements.length; i++) {
+      var e = elements[i];
+      out00String = println(i + ") " + e.tagName + " id = " + e.id + " of class " + e.attributes.class.value);
+    }
+    const ePOut00 = document.getElementById("pOut00");
+    out00String = println("ePOut00: " + ePOut00);
+    out00String = println("ePOut00.attributes: " + ePOut00.attributes);
+    out00String = println("ePOut00.attributes.class.name: " + ePOut00.attributes.class.name);
+    out00String = println("ePOut00.attributes.class.value: " + ePOut00.attributes.class.value);
+    out00.innerHTML = out00String;
+  }
+
+function generateEngine() {
+  out00String = println("blable");
+  
+  // root:
+  const rootDiv = document.getElementById("parent");
+  
+  // automatet addition:
+  for (let row in InputDB) {
+    out00String = println("Adding: " + row + "(" + InputDB.row + ")");
+    addSearchSection(InputDB[row]);
+  }
+  
+  
+  // output:
+  var outPara = document.getElementById("pOut00");
+  // outPara.innerHTML = out00String;
+}
+
+</script>
+
+</head>
+<body onload="generateEngine()">
+
+<div class="title">
+<h1 class="title">Duckduckgo search interface</h1>
+<p class="title">v. 2</p>
+</div>
+
+<div id="parent">
+
+  
+</div>
+
+<!-- <button id="button00" type="button" onclick="generateEngine()">Test DOM</button> -->
+
+<p id="pOut00" class="blabla"></p>
+
+
+<p id="sign">khaz&copy;2021</p>
+
+</body>
+</html>
