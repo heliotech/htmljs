@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8" />
 <title>softdev search engine</title>
 <link rel="icon" type="image/png" href="/home/khaz/docs/html/img/searchUtfIcon.png">
 <link rel="stylesheet" href="style.css">
 
-<script type="text/javascript">
+<script>
 
 var out00String = "";
 
@@ -47,14 +47,16 @@ var	InputDB = {rowPython: {title: "Python",
                                          s01: {title: "Search: matplotlib + ...", hint: "matplotlib "},
                                          s02: {title: "Search: numpy + ...", hint: "numpy "},
                                          s03: {title: "Search: sympy + ...", hint: "sympy "},}},
-				  rowHTML: {title: "HTML and CSS",
+				  rowHTML: {title: "",
 				  						sections: {}},
-				  rowLaTeX: {title: "LaTeX",
+				  rowLaTeX: {title: "",
 				  						sections: {}},
 				  };
+InputDB.rowHTML.title = "HTML and CSS";				  
 InputDB.rowHTML.sections.s00 = {title: "Search: html + ... ", hint: "html "};
 InputDB.rowHTML.sections.s01 = {title: "Search: css + ... ", hint: "css "};
 InputDB.rowHTML.sections.s02 = {title: "Search: javascript + ... ", hint: "javascript "};
+InputDB.rowLaTeX.title = "LaTeX";
 InputDB.rowLaTeX.sections.s00 = {title: "Search: latex + ... ", hint: "latex "};
 InputDB.rowLaTeX.sections.s01 = {title: "Search: latex how to + ... ", hint: "latex how to "};
 var IDBKeys = Object.keys(InputDB);
@@ -145,126 +147,6 @@ function addSearchTile(tile, root){
   
   root.appendChild(searchContDiv);
 }
-	
-	function printDom() {
-    var out00 = document.getElementById("pOut00");
-    
-    var rowTits = document.getElementsByClassName("row_tit");
-    lTits = rowTits.length;
-    // out00String = println("Nr of titles = " + lTits)";
-    
-    for (i = 0; i < lTits; i++) {
-      curElement = rowTits[i];
-      // out00String = println(i + ": " + curElement);
-      curElement.innerHTML = curElement.innerHTML + " (" + i + ")";
-    }
-    
-    // rows of class = "flexRow":
-    out00String = println("<br /> ------------------- 'flexRow's:");
-    var flexRows = document.getElementsByClassName("flexRow");
-    lFR = flexRows.length;
-    for (i = 0; i < lFR; i++) {
-      var target = flexRows[i];
-      out00String = println(i + ") 'flexRow' &rarr; " + target);
-      // iteration through a 'div' element:
-      var divChildren = target.children;
-      for (j = 0; j < divChildren.length; j++) {
-        var curElement = divChildren[i];
-        out00String = println(tabs4 + "'flexRow' &rarr; child &rarr; " + curElement);
-        var curElementChildren = curElement.children;
-        for (k = 0; k < curElementChildren.length; k++) {
-          var ccelement = curElementChildren[k];
-          if (ccelement.tagName != "FORM") {
-          var attrsR = [];
-          for (let p in ccelement.attributes) {
-            // console.log("pushing: ", p);
-            attrsR.push(p);
-          }
-          // out00String = println(tabs8 + "'flexRow' &rarr; child &rarr; child &rarr;" + ccelement + ", attributes: " + attrsR + ", " + ccelement.attributes.item(0));// + ccelement.attributes.class.value);
-          out00String = print(tabs8 + "'flexRow' &rarr; child &rarr; child &rarr;" + ccelement + ": " + ccelement.innerHTML + ", attributes: " + ccelement.attributes.length);  // + ", attrsR = " + attrsR);  // + ccelement.attributes.class.value);
-            out00String = println(", Array.from(...)[0]: " + Array.from(ccelement.attributes)[0]);
-          }
-        }
-      }
-    }
-    
-    // 'searchCont' class:
-    out00String = println("<br />'searchCont class'");
-    var searchConts = document.getElementsByClassName("searchCont");
-    const searchContsR = Array.from(searchConts);
-    let lSCR = searchContsR.length;
-    out00String = println("searchContsR.length = " + lSCR);
-    const searchContsParasR = searchContsR.filter(onlyParas);
-    const lSCP = searchContsParasR.length;
-    out00String = println("searchContsParasR = '" + searchContsParasR + "' (" + lSCP + ")");
-    out00String = println("Array searchContsR: is array?: " + Array.isArray(searchContsR));
-    out00String = println("searchContsR.length = " + searchContsR.length);
-    // searchContsR.forEach(printArr);
-    for (let i in searchContsR) {
-      var divChildrenR = Array.from(searchContsR[i].children);
-      var divChildrenParasR = divChildrenR.filter(onlyParas);
-      var lDCP = divChildrenParasR.length;
-      out00String = print("typeof(divChildrenParasR) = " + typeof(divChildrenParasR) + ", len = " + lDCP, out00String);
-      out00String = println(", divChildrenParasR[0].innerHTML = " + divChildrenParasR[0].innerHTML);
-    }
-    // var searchConts = flexRows.children.getElementsByClassName("searchCont");
-    for (i = 0; i < searchConts.length; i++) {
-      var element = searchConts[i];
-      out00String = println(i + ") '" + element.id + "'");
-      var paras = element.getElementsByClassName("desc");  // 'paragraphs'
-      var typeParas = typeof(paras);
-      var lPs = paras.length;
-      out00String = println(tabs4 + "paras: " + paras + " (" + typeParas + ", l = " + lPs + ")");
-      // for (j = 0; j < lPs; j++) {
-        // out00String = println(tabs4 + "paras[j].innerHTML = " + paras[j].innerHTML);
-        try {
-          out00String = println(tabs4 + "paras[j=" + 0 + "].innerHTML = " + paras[0].innerHTML);
-        }
-        catch (error) {
-          out00String = println(tabs4 + "paras[0] -- exception: " + error);
-        }
-      // }
-    }
-    
-    // printing InputDB:
-    out00String = println("<br />JSON");
-    out00String = println("********");
-    out00String += "InputDB: " + InputDB + "<br />";
-    for (const x in InputDB) {
-      obj = InputDB[x];
-      out00String += obj.title + "<br />";
-    }
-    out00String += "Another iteration: <br />";
-    // var IDBKeys = Object.keys(InputDB);
-    out00String += "IDBKeys: " + IDBKeys + "<br />";
-    for (i = 0; i < IDBKeys.length; i++) {
-      var key = IDBKeys[i];
-      var obj = InputDB[key];
-      out00String += tabs4 + obj;
-      out00String += " title: " + obj.title + "<br />";
-      var curSects = obj.sections;
-      try {
-        var lCS = Object.keys(curSects).length;
-      } catch (error) { var lCS = 0;}
-      out00String = println("sections: " + curSects + " (length = " + lCS + ")");
-      try {
-        for (j = 0; j < lCS; j++) {
-          out00String = println(tabs4 + j + ") " + curSects[Object.keys(curSects)[j]]);
-        } } catch (error) { out00String = println("Error: " + error);}
-    }
-    var elements = document.getElementsByClassName("row_tit");
-    out00String = println("elements: " + elements + " (" + elements.length + ")");
-    for (i = 0; i < elements.length; i++) {
-      var e = elements[i];
-      out00String = println(i + ") " + e.tagName + " id = " + e.id + " of class " + e.attributes.class.value);
-    }
-    const ePOut00 = document.getElementById("pOut00");
-    out00String = println("ePOut00: " + ePOut00);
-    out00String = println("ePOut00.attributes: " + ePOut00.attributes);
-    out00String = println("ePOut00.attributes.class.name: " + ePOut00.attributes.class.name);
-    out00String = println("ePOut00.attributes.class.value: " + ePOut00.attributes.class.value);
-    out00.innerHTML = out00String;
-  }
 
 function generateEngine() {
   out00String = println("blable");
