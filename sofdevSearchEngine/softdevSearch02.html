@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <title>softdev search engine</title>
-<link rel="icon" type="image/png" href="/home/khaz/docs/html/img/searchUtfIcon.png">
+<link rel="icon" type="image/png" href="searchUtfIcon.png">
 <link rel="stylesheet" href="style.css">
 
 <script>
@@ -82,9 +82,7 @@ function addSearchSection(section) {
   var tilesLen = sectionTilesKeys.length;
   out00String = println("tilesLen = " + tilesLen);
   for (i = 0; i < tilesLen; i++) {
-    // addSearchTile(section.sections[i]);
     out00String = print("`addSearchTile(section.sections[sectionTilesKeys[" + i + "]]);`");
-    // out00String = println(" ->  + addSearchTile(" + section.sections[i] + ")");
     out00String = println(" ->  " + section.sections[sectionTilesKeys[i]]);
     console.log("Adding `" + section.sections[sectionTilesKeys[i]] + "`");
     addSearchTile(section.sections[sectionTilesKeys[i]], newFlexRowDiv);
